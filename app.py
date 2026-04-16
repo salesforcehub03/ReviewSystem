@@ -21,23 +21,22 @@ logger = logging.getLogger(__name__)
 
 class Config:
     """Application configuration"""
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
-    # Use absolute path based on script location to ensure consistency
-    UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
-    MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # 200MB max file size
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', './uploads')
+    MAX_CONTENT_LENGTH = int(os.environ.get('MAX_CONTENT_LENGTH', 200 * 1024 * 1024))  # 200MB
     ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
-    DATABASE_PATH = 'user_review_system.db'
+    DATABASE_PATH = os.environ.get('DATABASE_PATH', 'user_review_system.db')
     
-    # Email settings (will be configured by user in Step 1)
-    SMTP_SERVER = None
-    SMTP_PORT = None
-    SMTP_EMAIL = None
-    SMTP_PASSWORD = None
-    IMAP_SERVER = None
-    IMAP_PORT = None
+    # Email settings
+    SMTP_SERVER = os.environ.get('SMTP_SERVER', 'smtp.example.com')
+    SMTP_PORT = int(os.environ.get('SMTP_PORT', 587))
+    SMTP_EMAIL = os.environ.get('SMTP_EMAIL', 'example@example.com')
+    SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', 'secure-password')
+    IMAP_SERVER = os.environ.get('IMAP_SERVER', 'imap.example.com')
+    IMAP_PORT = int(os.environ.get('IMAP_PORT', 993))
     
-    # Gemini API (will be configured by user in Step 1)
-    GEMINI_API_KEY = None
+    # Gemini API
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'your-gemini-api-key')
 
 def allowed_file(filename):
     """Check if file extension is allowed"""
