@@ -3,7 +3,7 @@ services:
     name: urs-solution-v2
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python app.py"
+    startCommand: "/usr/bin/python3 app.py"
     plan: free
     region: oregon
     envVars:
