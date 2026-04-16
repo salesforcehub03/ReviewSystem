@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: urs-solution-v2
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python app.py"
+    plan: free
+    region: oregon
+    envVars:
+      FLASK_ENV: production
+      SECRET_KEY: change-this-to-a-secure-key
+      UPLOAD_FOLDER: /var/data/uploads
+      MAX_CONTENT_LENGTH: "200000000"
+      DATABASE_PATH: /var/data/user_review_system.db
+      SMTP_SERVER: smtp.example.com
+      SMTP_PORT: "587"
+      SMTP_EMAIL: example@example.com
+      SMTP_PASSWORD: secure-password
+      IMAP_SERVER: imap.example.com
+      IMAP_PORT: "993"
+      GEMINI_API_KEY: your-gemini-api-key
