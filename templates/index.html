@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered User Review System | HCLTech</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🤖</div>
+                    <div class="logo-text">
+                        <h1>User Review</h1>
+                        <p>HCLTech System</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Workflow</div>
+                    <div class="nav-item active" onclick="validateAndShowStep(1)">
+                        <span class="nav-item-icon">⚙️</span>
+                        <span class="nav-item-text">Setup</span>
+                    </div>
+                    <div class="nav-item" onclick="validateAndShowStep(2)">
+                        <span class="nav-item-icon">👥</span>
+                        <span class="nav-item-text">Users</span>
+                    </div>
+                    <div class="nav-item" onclick="validateAndShowStep(3)">
+                        <span class="nav-item-icon">🧠</span>
+                        <span class="nav-item-text">Review Process</span>
+                    </div>
+                    <div class="nav-item" onclick="validateAndShowStep(4)">
+                        <span class="nav-item-icon">📊</span>
+                        <span class="nav-item-text">Reports</span>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <div class="nav-item" onclick="resetSystem()">
+                        <span class="nav-item-icon">🗑️</span>
+                        <span class="nav-item-text">Reset System</span>
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-item-icon">ℹ️</span>
+                        <span class="nav-item-text">About</span>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-content">
+                    <div>
+                        <h2 class="page-title" id="page-title">Setup & Configuration</h2>
+                        <p class="page-subtitle" id="page-subtitle">Configure AI and email settings</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span>System Active</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- STEP 1: Setup & Configuration -->
+                <div id="step1" class="step-content active">
+                    <!-- Gemini AI Configuration -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🤖</div>
+                            <div class="card-title">
+                                <h3>Gemini AI Configuration</h3>
+                                <p>Configure AI for intelligent email response processing</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label required">Gemini API Key</label>
+                                <input type="password" id="gemini-api-key" class="form-input"
+                                    placeholder="Enter your Gemini API key">
+                            </div>
+                            <div id="gemini-status" class="mb-20">
+                                <span class="badge badge-warning">⚠️ Not Initialized</span>
+                            </div>
+                            <button id="btn-configure-gemini" onclick="configureGemini()" class="btn btn-primary">
+                                🔑 Configure Gemini AI
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Email Configuration -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📧</div>
+                            <div class="card-title">
+                                <h3>Email Configuration</h3>
+                                <p>Setup SMTP and IMAP for email automation</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label required">SMTP Server</label>
+                                    <input type="text" id="smtp-server" class="form-input" value="smtp.gmail.com"
+                                        placeholder="smtp.gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label required">SMTP Port</label>
+                                    <input type="number" id="smtp-port" class="form-input" value="587"
+                                        placeholder="587">
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label required">Email Address</label>
+                                    <input type="email" id="from-email" class="form-input"
+                                        placeholder="your-email@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label required">Password</label>
+                                    <input type="password" id="email-password" class="form-input"
+                                        placeholder="App password">
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">IMAP Server (Optional)</label>
+                                    <input type="text" id="imap-server" class="form-input" value="imap.gmail.com"
+                                        placeholder="imap.gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">IMAP Port</label>
+                                    <input type="number" id="imap-port" class="form-input" value="993"
+                                        placeholder="993">
+                                </div>
+                            </div>
+
+                            <button id="btn-configure-email" onclick="configureEmail()" class="btn btn-primary">
+                                📧 Configure Email
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Owners File Upload -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📁</div>
+                            <div class="card-title">
+                                <h3>Owners File Upload</h3>
+                                <p>Upload Excel file with department owners</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="file-upload-area" onclick="document.getElementById('owners-file').click()">
+                                <div class="file-upload-icon">📄</div>
+                                <div class="file-upload-text">
+                                    <h4>Upload Owners Excel File</h4>
+                                    <p>Click to browse or drag and drop • Expected columns: User, Email, Owner</p>
+                                </div>
+                                <input type="file" id="owners-file" accept=".xlsx,.xls" onchange="uploadOwners()"
+                                    style="display: none;">
+                            </div>
+                            <div id="owners-status"></div>
+                            <div id="owners-preview" class="mt-20"></div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button id="btn-next-step-1" onclick="validateAndShowStep(2)" class="btn btn-primary">Next Step
+                            →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: User Management -->
+                <div id="step2" class="step-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📤</div>
+                            <div class="card-title">
+                                <h3>Upload Users File</h3>
+                                <p>Upload Excel file containing all users</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="file-upload-area" onclick="document.getElementById('users-file').click()">
+                                <div class="file-upload-icon">📊</div>
+                                <div class="file-upload-text">
+                                    <h4>Upload Users Excel File</h4>
+                                    <p>Click to browse or drag and drop • Expected columns: User, Email, Last Login,
+                                        Roles, Groups</p>
+                                </div>
+                                <input type="file" id="users-file" accept=".xlsx,.xls" onchange="uploadUsers()"
+                                    style="display: none;">
+                            </div>
+                            <div id="users-status"></div>
+                        </div>
+                    </div>
+
+                    <div id="card-it-users" class="card" style="display: none;">
+                        <div class="card-header">
+                            <div class="card-icon">💻</div>
+                            <div class="card-title">
+                                <h3>IT Department Users</h3>
+                                <p>Users with (IT) in their groups</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="it-users-table"></div>
+                        </div>
+                    </div>
+
+                    <div id="card-business-users" class="card" style="display: none;">
+                        <div class="card-header">
+                            <div class="card-icon">💼</div>
+                            <div class="card-title">
+                                <h3>Business Department Users</h3>
+                                <p>Users without (IT) in their groups</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="business-users-table"></div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button onclick="showStep(1)" class="btn btn-outline">← Previous</button>
+                        <button id="btn-next-step-2" onclick="validateAndShowStep(3)" class="btn btn-primary">Next Step
+                            →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Review Process -->
+                <div id="step3" class="step-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🎫</div>
+                            <div class="card-title">
+                                <h3>Generate Review Tickets</h3>
+                                <p>Create unique tickets and send review emails</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- CC Emails are now handled dynamically via Excel Upload -->
+                            <div class="btn-group-horizontal">
+                                <button id="btn-generate-tickets" onclick="generateTickets()" class="btn btn-primary">
+                                    🎫 Generate Tickets & Send Emails
+                                </button>
+                                <button onclick="clearProcessData()" class="btn btn-secondary"
+                                    style="background-color: #6c757d;">
+                                    🧹 Clear Process Data
+                                </button>
+                            </div>
+                            <div id="tickets-status" class="mt-20"></div>
+                            <div id="tickets-list" class="mt-20"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📬</div>
+                            <div class="card-title">
+                                <h3>Email Responses</h3>
+                                <p>Monitor and fetch email replies from owners</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <button onclick="fetchResponses()" class="btn btn-secondary">
+                                📥 Fetch New Responses
+                            </button>
+                            <div id="responses-status" class="mt-20"></div>
+                            <div id="responses-list" class="mt-20"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🤖</div>
+                            <div class="card-title">
+                                <h3>AI Processing</h3>
+                                <p>Use Gemini AI to extract and execute actions</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-20">Process email responses with Gemini AI to automatically extract user
+                                management actions.</p>
+                            <button onclick="processResponses()" class="btn btn-success">
+                                🧠 Process Responses with AI
+                            </button>
+                            <div id="process-status" class="mt-20"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📝</div>
+                            <div class="card-title">
+                                <h3>Change Logs</h3>
+                                <p>View all modifications made by AI</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <button onclick="loadChangeLogs()" class="btn btn-outline">
+                                🔄 Refresh Change Logs
+                            </button>
+                            <div id="changelogs-list" class="mt-20">
+                                <p>No changes recorded yet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button onclick="showStep(2)" class="btn btn-outline">← Previous</button>
+                        <button onclick="showStep(4)" class="btn btn-primary">Next Step →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Reports & Analysis -->
+                <div id="step4" class="step-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📈</div>
+                            <div class="card-title">
+                                <h3>System Statistics</h3>
+                                <p>Overview of all system activities</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="stats-grid" class="stats-grid">
+                                <!-- Stats will be loaded dynamically -->
+                            </div>
+                            <button onclick="loadStats()" class="btn btn-outline">
+                                🔄 Refresh Statistics
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📥</div>
+                            <div class="card-title">
+                                <h3>Export Reports</h3>
+                                <p>Download comprehensive reports in Excel format</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center">
+                                <p class="mb-20">Click the button below to generate a complete report folder on your
+                                    Desktop containing the Final User List, Change Logs, and Email Responses.</p>
+                                <button id="btn-export-desktop" onclick="exportToDesktop()" class="btn btn-success"
+                                    style="background-color: #28a745; font-size: 1.2em; padding: 15px 30px;">
+                                    🖥️ Finish & Export Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">👥</div>
+                            <div class="card-title">
+                                <h3>Final User List</h3>
+                                <p>Complete list of all users after review</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <button onclick="loadUsers('active')" class="btn btn-secondary mb-20">
+                                🔄 Refresh User List
+                            </button>
+
+                            <div id="final-users-table" style="margin-top: 20px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📋</div>
+                            <div class="card-title">
+                                <h3>Change Logs Summary</h3>
+                                <p>Complete audit trail of all modifications</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="changelogs-list-final"></div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button onclick="showStep(3)" class="btn btn-outline">← Previous</button>
+                        <button onclick="showStep(1)" class="btn btn-secondary">🔄 Start New Review</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <script>
+        // Use Global main.js functions directly
+    </script>
+</body>
+
+</html>
